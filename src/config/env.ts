@@ -57,6 +57,12 @@ export const envSchema = Type.Object({
   }),
 
   // Redis
+  DATABASE_URL: Type.String({
+    minLength: 1,
+    pattern: '^postgres(?:ql)?:\\/\\/[^\\s]+$',
+  }),
+
+  // Redis
   REDIS_URL: Type.String({
     minLength: 1,
     default: 'redis://127.0.0.1:6379',

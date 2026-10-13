@@ -5,6 +5,7 @@ const Name = Type.String({
   maxLength: 120,
   pattern: '\\S',
 });
+
 const Email = Type.String({
   format: 'email',
   maxLength: 254,
@@ -32,11 +33,13 @@ export const createUserSchema = Type.Object(
 export const updateUserSchema = Type.Partial(createUserSchema, {
   minProperties: 1,
 });
+
 export const userParamsSchema = Type.Object({
   id: Type.String({
     format: 'uuid',
   }),
 });
+
 export const listUsersQuerySchema = Type.Object(
   {
     limit: Type.Integer({
@@ -51,6 +54,7 @@ export const listUsersQuerySchema = Type.Object(
   },
   { additionalProperties: false },
 );
+
 export const userListSchema = Type.Array(userSchema);
 
 export type User = Static<typeof userSchema>;

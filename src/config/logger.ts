@@ -5,10 +5,6 @@ import { isDevelopment } from '#/shared/utils/env';
 export const loggerOptions: PinoLoggerOptions = {
   level: env.LOG_LEVEL,
 
-  //   base: {
-  //     service: env.OTEL_SERVICE_NAME,
-  //   },
-
   redact: {
     paths: [
       'req.headers.authorization',
