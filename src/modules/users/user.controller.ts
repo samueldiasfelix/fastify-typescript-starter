@@ -11,30 +11,31 @@ import type { UserService } from './user.service.js';
 type Dependencies = { userService: UserService };
 
 export class UserController {
-  private readonly service: UserService;
+  private readonly userService: UserService;
 
   constructor({ userService }: Dependencies) {
-    this.service = userService;
+    this.userService = userService;
   }
+
   list = async (
     request: FastifyRequest<{ Querystring: ListUsersQuery }>,
     reply: FastifyReply,
   ) => {
-    return reply.send(await this.service.list(request.query));
+    return reply.send(await this.userService.list(request.query));
   };
 
   getById = async (
     request: FastifyRequest<{ Params: UserParams }>,
     reply: FastifyReply,
   ) => {
-    return reply.send(await this.service.getById(request.params.id));
+    return reply.send(await this.userService.getById(request.params.id));
   };
 
   create = async (
     request: FastifyRequest<{ Body: CreateUserInput }>,
     reply: FastifyReply,
   ) => {
-    const user = await this.service.create(request.body);
+    const user = await this.userService.create(request.body);
     return reply.code(201).send(user);
   };
 
@@ -43,7 +44,7 @@ export class UserController {
     reply: FastifyReply,
   ) => {
     return reply.send(
-      await this.service.update(request.params.id, request.body),
+      await this.userService.update(request.params.id, request.body),
     );
   };
 
@@ -51,7 +52,7 @@ export class UserController {
     request: FastifyRequest<{ Params: UserParams }>,
     reply: FastifyReply,
   ) => {
-    await this.service.delete(request.params.id);
+    await this.userService.delete(request.params.id);
     return reply.code(204).send();
   };
 }

@@ -12,10 +12,10 @@ import {
 type Dependencies = { userController: UserController };
 
 export class UserRoutes {
-  private readonly controller: UserController;
+  private readonly userController: UserController;
 
   constructor({ userController }: Dependencies) {
-    this.controller = userController;
+    this.userController = userController;
   }
 
   register: FastifyPluginAsyncTypebox = async (app) => {
@@ -30,7 +30,7 @@ export class UserRoutes {
           response: { 200: userListSchema },
         },
       },
-      this.controller.list,
+      this.userController.list,
     );
 
     app.get(
@@ -44,7 +44,7 @@ export class UserRoutes {
           response: { 200: userSchema },
         },
       },
-      this.controller.getById,
+      this.userController.getById,
     );
 
     app.post(
@@ -58,7 +58,7 @@ export class UserRoutes {
           response: { 201: userSchema },
         },
       },
-      this.controller.create,
+      this.userController.create,
     );
 
     app.patch(
@@ -73,7 +73,7 @@ export class UserRoutes {
           response: { 200: userSchema },
         },
       },
-      this.controller.update,
+      this.userController.update,
     );
 
     app.delete(
@@ -86,7 +86,7 @@ export class UserRoutes {
           params: userParamsSchema,
         },
       },
-      this.controller.delete,
+      this.userController.delete,
     );
   };
 }

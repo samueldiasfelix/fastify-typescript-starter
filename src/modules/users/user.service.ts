@@ -10,24 +10,24 @@ import type {
 type Dependencies = { userRepository: UserRepository };
 
 export class UserService {
-  private readonly repository: UserRepository;
+  private readonly userRepository: UserRepository;
 
   constructor({ userRepository }: Dependencies) {
-    this.repository = userRepository;
+    this.userRepository = userRepository;
   }
 
   list(query: ListUsersQuery): Promise<User[]> {
-    return this.repository.findAll(query);
+    return this.userRepository.findAll(query);
   }
 
   async getById(id: string): Promise<User> {
-    const user = await this.repository.findById(id);
+    const user = await this.userRepository.findById(id);
     if (!user) throw new UserNotFoundError();
     return user;
   }
 
   create(input: CreateUserInput): Promise<User> {
-    return this.repository.create({
+    return this.userRepository.create({
       name: input.name.trim(),
       email: input.email.toLowerCase(),
     });
@@ -38,13 +38,13 @@ export class UserService {
     if (input.name !== undefined) changes.name = input.name.trim();
     if (input.email !== undefined) changes.email = input.email.toLowerCase();
 
-    const user = await this.repository.update(id, changes);
+    const user = await this.userRepository.update(id, changes);
     if (!user) throw new UserNotFoundError();
     return user;
   }
 
   async delete(id: string): Promise<void> {
-    const deleted = await this.repository.delete(id);
+    const deleted = await this.userRepository.delete(id);
     if (!deleted) throw new UserNotFoundError();
   }
 }
