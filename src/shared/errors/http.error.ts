@@ -53,15 +53,12 @@ export function errorCodeFor(statusCode: number): string {
 }
 
 export class HttpError extends AppError {
-  readonly statusCode: HttpStatusCode;
-
   constructor(
-    statusCode: HttpStatusCode,
+    readonly statusCode: HttpStatusCode,
     message = reasonPhrase(statusCode),
     options: AppErrorOptions = {},
   ) {
     super(message, { code: errorCodeFor(statusCode), ...options });
-    this.statusCode = statusCode;
   }
 
   get isClientError(): boolean {

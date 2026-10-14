@@ -1,13 +1,10 @@
-import { fastifyAwilixPlugin } from '@fastify/awilix';
 import Fastify from 'fastify';
 import { expect, test } from 'vitest';
-import { createAppContainer } from '../../src/container.js';
 import userModule from '../../src/modules/users/user.module.js';
 
 async function buildApp() {
   const app = Fastify();
-  await app.register(fastifyAwilixPlugin, { container: createAppContainer() });
-  await app.register(userModule);
+  await app.register(userModule, { prefix: '/users' });
   return app;
 }
 

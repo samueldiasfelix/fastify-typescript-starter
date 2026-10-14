@@ -1,5 +1,5 @@
+import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
 import { asClass } from 'awilix';
-import { defineModule } from '../../shared/awilix/define-module.js';
 import { UserController } from './user.controller.js';
 import {
   InMemoryUserRepository,
@@ -13,17 +13,19 @@ declare module '@fastify/awilix' {
     userRepository: UserRepository;
     userService: UserService;
     userController: UserController;
-    userRoutes: UserRoutes;
   }
 }
 
-export default defineModule({
-  prefix: '/users',
-  providers: {
-    userRepository: asClass(InMemoryUserRepository).singleton(),
-    userService: asClass(UserService).singleton(),
-    userController: asClass(UserController).singleton(),
-    userRoutes: asClass(UserRoutes).singleton(),
-  },
-  routes: 'userRoutes',
-});
+export const userDependencies = {
+  userRepository: asClass(InMemoryUserRepository).singleton(),
+  userService: asClass(UserService).singleton(),
+  userController: asClass(UserController).singleton(),
+};
+
+const userModule: FastifyPluginAsyncTypebox = async (app) => {
+  const userRoutes = new UserRoutes(app.diContainer.resolve('userController'));
+
+  await app.register(userRoutes.register);
+};
+
+export default userModule;

@@ -1,3 +1,0 @@
-// requestOtp(), verifyOtp()
-
-// signOut(), signOutAll()

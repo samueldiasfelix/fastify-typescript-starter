@@ -7,7 +7,9 @@ import type {
   User,
 } from './user.schema.js';
 
-type Dependencies = { userRepository: UserRepository };
+type Dependencies = {
+  userRepository: UserRepository;
+};
 
 export class UserService {
   private readonly userRepository: UserRepository;

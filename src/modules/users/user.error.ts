@@ -1,19 +1,15 @@
-export class UserNotFoundError extends Error {
-  readonly statusCode = 404;
-  readonly code = 'USER_NOT_FOUND';
+import { ConflictError, NotFoundError } from '#/shared/errors/http.error';
 
+export class UserNotFoundError extends NotFoundError {
   constructor() {
-    super('Usuário não encontrado.');
-    this.name = 'UserNotFoundError';
+    super('Usuário não encontrado.', { code: 'USER_NOT_FOUND' });
   }
 }
 
-export class UserEmailAlreadyExistsError extends Error {
-  readonly statusCode = 409;
-  readonly code = 'USER_EMAIL_ALREADY_EXISTS';
-
+export class UserEmailAlreadyExistsError extends ConflictError {
   constructor() {
-    super('Já existe um usuário com esse e-mail.');
-    this.name = 'UserEmailAlreadyExistsError';
+    super('Já existe um usuário com esse e-mail.', {
+      code: 'USER_EMAIL_ALREADY_EXISTS',
+    });
   }
 }

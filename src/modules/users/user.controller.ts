@@ -8,7 +8,9 @@ import type {
 
 import type { UserService } from './user.service.js';
 
-type Dependencies = { userService: UserService };
+type Dependencies = {
+  userService: UserService;
+};
 
 export class UserController {
   private readonly userService: UserService;

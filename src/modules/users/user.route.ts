@@ -9,14 +9,8 @@ import {
   userSchema,
 } from './user.schema.js';
 
-type Dependencies = { userController: UserController };
-
 export class UserRoutes {
-  private readonly userController: UserController;
-
-  constructor({ userController }: Dependencies) {
-    this.userController = userController;
-  }
+  constructor(private readonly userController: UserController) {}
 
   register: FastifyPluginAsyncTypebox = async (app) => {
     app.get(
