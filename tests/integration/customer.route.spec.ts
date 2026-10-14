@@ -1,13 +1,14 @@
-import { randomUUID } from 'node:crypto';
-import Fastify from 'fastify';
+import { randomUUIDv7 } from 'node:crypto';
+import fastify from 'fastify';
 import { expect, test } from 'vitest';
-import customerModule from '../../src/modules/customers/customer.module.js';
-import userModule from '../../src/modules/users/user.module.js';
-import { InMemoryUserRepository } from '../../src/modules/users/user.repository.js';
-import { UserService } from '../../src/modules/users/user.service.js';
+
+import customerModule from '#/modules/customers/customer.module';
+import userModule from '#/modules/users/user.module';
+import { InMemoryUserRepository } from '#/modules/users/user.repository';
+import { UserService } from '#/modules/users/user.service';
 
 async function buildApp() {
-  const app = Fastify();
+  const app = fastify();
   const userService = new UserService(new InMemoryUserRepository());
   await app.register(userModule, { prefix: '/users', userService });
   await app.register(customerModule, { prefix: '/customers', userService });
@@ -65,7 +66,7 @@ test('customer CRUD shares users, paginates and isolates applications', async ()
     const invalidUpdate = await app.inject({
       method: 'PATCH',
       url: `/customers/${customer.id}`,
-      payload: { userId: randomUUID() },
+      payload: { userId: randomUUIDv7() },
     });
     expect(invalidUpdate.statusCode).toBe(404);
     expect(invalidUpdate.json().code).toBe('USER_NOT_FOUND');
@@ -109,7 +110,7 @@ test('rejects invalid requests and missing customers or users', async () => {
     const missingUser = await app.inject({
       method: 'POST',
       url: '/customers/',
-      payload: { userId: randomUUID() },
+      payload: { userId: randomUUIDv7() },
     });
     expect(missingUser.statusCode).toBe(404);
     expect(missingUser.json().code).toBe('USER_NOT_FOUND');
@@ -124,20 +125,20 @@ test('rejects invalid requests and missing customers or users', async () => {
     }
     const emptyUpdate = await app.inject({
       method: 'PATCH',
-      url: `/customers/${randomUUID()}`,
+      url: `/customers/${randomUUIDv7()}`,
       payload: {},
     });
     expect(emptyUpdate.statusCode).toBe(400);
     const missingUpdate = await app.inject({
       method: 'PATCH',
-      url: `/customers/${randomUUID()}`,
-      payload: { userId: randomUUID() },
+      url: `/customers/${randomUUIDv7()}`,
+      payload: { userId: randomUUIDv7() },
     });
     expect(missingUpdate.statusCode).toBe(404);
     expect(missingUpdate.json().code).toBe('CUSTOMER_NOT_FOUND');
     const missingDelete = await app.inject({
       method: 'DELETE',
-      url: `/customers/${randomUUID()}`,
+      url: `/customers/${randomUUIDv7()}`,
     });
     expect(missingDelete.statusCode).toBe(404);
     expect(missingDelete.json().code).toBe('CUSTOMER_NOT_FOUND');

@@ -1,9 +1,9 @@
-import Fastify from 'fastify';
+import fastify from 'fastify';
 import { expect, test } from 'vitest';
-import userModule from '../../src/modules/users/user.module.js';
+import userModule from '#/modules/users/user.module';
 
 async function buildApp() {
-  const app = Fastify();
+  const app = fastify();
   await app.register(userModule, { prefix: '/users' });
   return app;
 }

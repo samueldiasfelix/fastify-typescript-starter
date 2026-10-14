@@ -5,14 +5,12 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
-    // For nodejs:
     "lib": ["esnext"],
     "types": ["node"],
-    // and npm install -D @types/node
-
     // Resolves "#/*" for .ts files (package.json "development" condition)
     "customConditions": ["development"],
 
+    // File Layout
     // Base for type-checking/editor only; the configuration for the build resides in tsconfig.build.json.
     "noEmit": true,
 
@@ -28,5 +26,5 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src", "drizzle.config.ts"]
+  "include": ["src", "drizzle.config.ts", "vitest.config.ts"]
 }
