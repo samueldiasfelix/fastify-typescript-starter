@@ -8,16 +8,8 @@ import type {
 
 import type { CustomerService } from './customer.service.js';
 
-type Dependencies = {
-  customerService: CustomerService;
-};
-
 export class CustomerController {
-  private readonly customerService: CustomerService;
-
-  constructor({ customerService }: Dependencies) {
-    this.customerService = customerService;
-  }
+  constructor(private readonly customerService: CustomerService) {}
 
   list = async (
     request: FastifyRequest<{ Querystring: ListCustomersQuery }>,

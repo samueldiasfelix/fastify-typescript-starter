@@ -8,19 +8,11 @@ import type {
   UpdateCustomerInput,
 } from './customer.schema.js';
 
-type Dependencies = {
-  customerRepository: CustomerRepository;
-  userService: Pick<UserService, 'getById'>;
-};
-
 export class CustomerService {
-  private readonly customerRepository: CustomerRepository;
-  private readonly userService: Pick<UserService, 'getById'>;
-
-  constructor({ customerRepository, userService }: Dependencies) {
-    this.customerRepository = customerRepository;
-    this.userService = userService;
-  }
+  constructor(
+    private readonly customerRepository: CustomerRepository,
+    private readonly userService: Pick<UserService, 'getById'>,
+  ) {}
 
   list(query: ListCustomersQuery): Promise<Customer[]> {
     return this.customerRepository.findAll(query);

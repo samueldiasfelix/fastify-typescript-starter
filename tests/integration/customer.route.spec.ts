@@ -1,17 +1,21 @@
 import { randomUUIDv7 } from 'node:crypto';
+import { fastifyAwilixPlugin } from '@fastify/awilix';
 import fastify from 'fastify';
 import { expect, test } from 'vitest';
 
+import { createDiContainer } from '#/container';
 import customerModule from '#/modules/customers/customer.module';
 import userModule from '#/modules/users/user.module';
-import { InMemoryUserRepository } from '#/modules/users/user.repository';
-import { UserService } from '#/modules/users/user.service';
 
 async function buildApp() {
   const app = fastify();
-  const userService = new UserService(new InMemoryUserRepository());
-  await app.register(userModule, { prefix: '/users', userService });
-  await app.register(customerModule, { prefix: '/customers', userService });
+  await app.register(fastifyAwilixPlugin, {
+    container: createDiContainer(),
+    disposeOnClose: true,
+    disposeOnResponse: true,
+  });
+  await app.register(userModule, { prefix: '/users' });
+  await app.register(customerModule, { prefix: '/customers' });
   return app;
 }
 

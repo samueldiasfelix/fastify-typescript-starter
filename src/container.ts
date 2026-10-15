@@ -15,11 +15,11 @@ export type ContainerOverrides = NameAndRegistrationPair<Cradle>;
  * são compostas. Um container novo por chamada isola o estado entre instâncias
  * de `buildApp()` (os repositórios em memória são singletons).
  *
- * Modo PROXY: cada classe recebe um objeto e desestrutura o que precisa
- * (ex.: `constructor({ userRepository })`).
+ * Modo CLASSIC: os nomes dos parâmetros dos construtores devem corresponder
+ * aos registros do container (ex.: `constructor(userRepository)`).
  */
 export function createDiContainer(overrides: ContainerOverrides = {}) {
-  return createContainer<Cradle>({ injectionMode: InjectionMode.PROXY })
+  return createContainer<Cradle>({ injectionMode: InjectionMode.CLASSIC })
     .register(userDependencies)
     .register(customerDependencies)
     .register(overrides);

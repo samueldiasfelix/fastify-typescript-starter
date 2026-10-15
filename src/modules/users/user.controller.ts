@@ -8,16 +8,8 @@ import type {
 
 import type { UserService } from './user.service.js';
 
-type Dependencies = {
-  userService: UserService;
-};
-
 export class UserController {
-  private readonly userService: UserService;
-
-  constructor({ userService }: Dependencies) {
-    this.userService = userService;
-  }
+  constructor(private readonly userService: UserService) {}
 
   list = async (
     request: FastifyRequest<{ Querystring: ListUsersQuery }>,

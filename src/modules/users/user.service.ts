@@ -7,16 +7,8 @@ import type {
   User,
 } from './user.schema.js';
 
-type Dependencies = {
-  userRepository: UserRepository;
-};
-
 export class UserService {
-  private readonly userRepository: UserRepository;
-
-  constructor({ userRepository }: Dependencies) {
-    this.userRepository = userRepository;
-  }
+  constructor(private readonly userRepository: UserRepository) {}
 
   list(query: ListUsersQuery): Promise<User[]> {
     return this.userRepository.findAll(query);
