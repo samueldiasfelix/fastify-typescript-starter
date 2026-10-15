@@ -4,8 +4,6 @@ import fastify from 'fastify';
 import { expect, test } from 'vitest';
 
 import { createDiContainer } from '#/container';
-import customerModule from '#/modules/customers/customer.module';
-import userModule from '#/modules/users/user.module';
 
 async function buildApp() {
   const app = fastify();
@@ -14,8 +12,12 @@ async function buildApp() {
     disposeOnClose: true,
     disposeOnResponse: true,
   });
-  await app.register(userModule, { prefix: '/users' });
-  await app.register(customerModule, { prefix: '/customers' });
+  await app.register(app.diContainer.resolve('userRoutes').register, {
+    prefix: '/users',
+  });
+  await app.register(app.diContainer.resolve('customerRoutes').register, {
+    prefix: '/customers',
+  });
   return app;
 }
 

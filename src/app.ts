@@ -24,9 +24,11 @@ export async function buildApp(overrides: ContainerOverrides = {}) {
     dir: join(import.meta.dirname, 'plugins'),
   });
 
-  await app.register(autoload, {
-    dir: join(import.meta.dirname, 'modules'),
-    matchFilter: /\.module\.(ts|js)$/,
+  await app.register(app.diContainer.resolve('userRoutes').register, {
+    prefix: '/users',
+  });
+  await app.register(app.diContainer.resolve('customerRoutes').register, {
+    prefix: '/customers',
   });
 
   return app;

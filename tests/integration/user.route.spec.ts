@@ -2,7 +2,6 @@ import { fastifyAwilixPlugin } from '@fastify/awilix';
 import fastify from 'fastify';
 import { expect, test } from 'vitest';
 import { createDiContainer } from '#/container';
-import userModule from '#/modules/users/user.module';
 
 async function buildApp() {
   const app = fastify();
@@ -11,7 +10,9 @@ async function buildApp() {
     disposeOnClose: true,
     disposeOnResponse: true,
   });
-  await app.register(userModule, { prefix: '/users' });
+  await app.register(app.diContainer.resolve('userRoutes').register, {
+    prefix: '/users',
+  });
   return app;
 }
 
