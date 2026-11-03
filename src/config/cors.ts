@@ -7,5 +7,7 @@ export const corsOptions: FastifyCorsOptions = {
     .filter(Boolean),
   credentials: true,
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  // Lets browser clients read how long to wait after a 429/503.
+  exposedHeaders: ['retry-after'],
   maxAge: 600,
 };

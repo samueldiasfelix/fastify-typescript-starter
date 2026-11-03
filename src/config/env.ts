@@ -56,7 +56,7 @@ export const envSchema = Type.Object({
     minLength: 32,
   }),
 
-  // Redis
+  // Database
   DATABASE_URL: Type.String({
     minLength: 1,
     pattern: '^postgres(?:ql)?:\\/\\/[^\\s]+$',

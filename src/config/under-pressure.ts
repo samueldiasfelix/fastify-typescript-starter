@@ -19,9 +19,6 @@ export const underPressureOptions: FastifyUnderPressureOptions = {
   // Cabeçalho Retry-After em segundos.
   retryAfter: 60,
 
-  // Mensagem retornada com HTTP 503 quando o serviço está sobrecarregado.
-  message: 'Serviço temporariamente indisponível. Tente novamente mais tarde.',
-
   // Limites de memória desativados por padrão (0).
   // Configure conforme a memória disponível no container.
   // maxHeapUsedBytes: 0,
