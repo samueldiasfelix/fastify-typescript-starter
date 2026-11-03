@@ -1,91 +1,39 @@
-import Type from 'typebox';
-import Value from 'typebox/value';
+import { z } from 'zod';
 
-export const envSchema = Type.Object({
+export const envSchema = z.object({
   // Application
-  NODE_ENV: Type.Union(
-    [
-      Type.Literal('development'),
-      Type.Literal('production'),
-      Type.Literal('test'),
-    ],
-    { default: 'development' },
-  ),
+  NODE_ENV: z
+    .enum(['development', 'production', 'test'])
+    .default('development'),
 
-  HOST: Type.String({
-    minLength: 1,
-    default: '127.0.0.1',
-  }),
+  HOST: z.string().min(1).default('127.0.0.1'),
 
-  PORT: Type.Integer({
-    minimum: 0,
-    maximum: 65_535,
-    default: 3000,
-  }),
+  PORT: z.coerce.number().int().min(0).max(65_535).default(3000),
 
-  LOG_LEVEL: Type.Union(
-    [
-      Type.Literal('fatal'),
-      Type.Literal('error'),
-      Type.Literal('warn'),
-      Type.Literal('info'),
-      Type.Literal('debug'),
-      Type.Literal('trace'),
-      Type.Literal('silent'),
-    ],
-    { default: 'info' },
-  ),
+  LOG_LEVEL: z
+    .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
+    .default('info'),
 
   // Proxy
-  TRUST_PROXY: Type.String({
-    default: '',
-  }),
+  TRUST_PROXY: z.string().default(''),
 
   // CORS
-  CORS_ORIGINS: Type.String({
-    default: '',
-  }),
+  CORS_ORIGINS: z.string().default(''),
 
   // Cookies
-  COOKIE_SECRET: Type.String({
-    minLength: 32,
-  }),
+  COOKIE_SECRET: z.string().min(32),
 
   // JWT
-  JWT_SECRET: Type.String({
-    minLength: 32,
-  }),
+  JWT_SECRET: z.string().min(32),
 
   // Database
-  DATABASE_URL: Type.String({
-    minLength: 1,
-    pattern: '^postgres(?:ql)?:\\/\\/[^\\s]+$',
-  }),
+  DATABASE_URL: z
+    .string()
+    .min(1)
+    .regex(/^postgres(?:ql)?:\/\/\S+$/),
 
   // Redis
-  REDIS_URL: Type.String({
-    minLength: 1,
-    default: 'redis://127.0.0.1:6379',
-  }),
+  REDIS_URL: z.string().min(1).default('redis://127.0.0.1:6379'),
 });
 
-export type Env = Type.Static<typeof envSchema>;
-
-export function parseEnv(source: NodeJS.ProcessEnv = process.env): Env {
-  const value = Value.Convert(
-    envSchema,
-    Value.Default(envSchema, Value.Clean(envSchema, { ...source })),
-  );
-
-  if (!Value.Check(envSchema, value)) {
-    const details = Value.Errors(envSchema, value)
-      .map((error) => `  ${error.instancePath || '/'}: ${error.message}`)
-      .join('\n');
-
-    throw new Error(`Invalid environment variables:\n${details}`);
-  }
-
-  return value;
-}
-
-export const env = parseEnv();
+export const env = envSchema.parse(process.env);
