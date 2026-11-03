@@ -1,5 +1,5 @@
+import type { UserRepository } from './repositories/user.repository.js';
 import { UserNotFoundError } from './user.error.js';
-import type { UserRepository } from './user.repository.js';
 import type {
   CreateUserInput,
   ListUsersQuery,

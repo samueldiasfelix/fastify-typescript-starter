@@ -1,12 +1,12 @@
 import type { UserService } from '../users/user.service.js';
 import { CustomerNotFoundError } from './customer.error.js';
-import type { CustomerRepository } from './customer.repository.js';
 import type {
   CreateCustomerInput,
   Customer,
   ListCustomersQuery,
   UpdateCustomerInput,
 } from './customer.schema.js';
+import type { CustomerRepository } from './repositories/customer.repository.js';
 
 export class CustomerService {
   constructor(

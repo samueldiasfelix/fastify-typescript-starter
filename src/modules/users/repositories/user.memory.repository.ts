@@ -1,21 +1,13 @@
 import { randomUUID } from 'node:crypto';
-import { UserEmailAlreadyExistsError } from './user.error.js';
+import { UserEmailAlreadyExistsError } from '../user.error.js';
 import type {
   CreateUserInput,
   ListUsersQuery,
   UpdateUserInput,
   User,
-} from './user.schema.js';
+} from '../user.schema.js';
+import type { UserRepository } from './user.repository.js';
 
-export interface UserRepository {
-  findAll(query: ListUsersQuery): Promise<User[]>;
-  findById(id: string): Promise<User | null>;
-  create(input: CreateUserInput): Promise<User>;
-  update(id: string, input: UpdateUserInput): Promise<User | null>;
-  delete(id: string): Promise<boolean>;
-}
-
-// Adapter temporário: os dados existem apenas durante a execução deste processo.
 export class InMemoryUserRepository implements UserRepository {
   private readonly users = new Map<string, User>();
 

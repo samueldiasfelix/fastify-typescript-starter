@@ -4,17 +4,9 @@ import type {
   Customer,
   ListCustomersQuery,
   UpdateCustomerInput,
-} from './customer.schema.js';
+} from '../customer.schema.js';
+import type { CustomerRepository } from './customer.repository.js';
 
-export interface CustomerRepository {
-  findAll(query: ListCustomersQuery): Promise<Customer[]>;
-  findById(id: string): Promise<Customer | null>;
-  create(input: CreateCustomerInput): Promise<Customer>;
-  update(id: string, input: UpdateCustomerInput): Promise<Customer | null>;
-  delete(id: string): Promise<boolean>;
-}
-
-// Adapter temporário: os dados existem apenas durante a execução deste processo.
 export class InMemoryCustomerRepository implements CustomerRepository {
   private readonly customers = new Map<string, Customer>();
 

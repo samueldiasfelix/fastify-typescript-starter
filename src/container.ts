@@ -7,19 +7,15 @@ import {
 } from 'awilix';
 
 import { CustomerController } from '#/modules/customers/customer.controller';
-import {
-  type CustomerRepository,
-  InMemoryCustomerRepository,
-} from '#/modules/customers/customer.repository';
 import { CustomerRoutes } from '#/modules/customers/customer.route';
 import { CustomerService } from '#/modules/customers/customer.service';
+import { InMemoryCustomerRepository } from '#/modules/customers/repositories/customer.memory.repository';
 import { UserController } from '#/modules/users/user.controller';
-import {
-  InMemoryUserRepository,
-  type UserRepository,
-} from '#/modules/users/user.repository';
 import { UserRoutes } from '#/modules/users/user.route';
 import { UserService } from '#/modules/users/user.service';
+import type { CustomerRepository } from './modules/customers/repositories/customer.repository.js';
+import { InMemoryUserRepository } from './modules/users/repositories/user.memory.repository.js';
+import type { UserRepository } from './modules/users/repositories/user.repository.js';
 
 declare module '@fastify/awilix' {
   interface Cradle {
