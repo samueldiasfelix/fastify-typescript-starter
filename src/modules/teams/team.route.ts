@@ -1,10 +1,10 @@
-import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import type { TeamController } from './team.controller.js';
 
 export class TeamRoutes {
   constructor(private readonly teamController: TeamController) {}
 
-  register: FastifyPluginAsyncTypebox = async (app) => {
+  register: FastifyPluginAsyncZod = async (app) => {
     //
   };
 }

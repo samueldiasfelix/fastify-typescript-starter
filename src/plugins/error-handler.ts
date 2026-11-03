@@ -1,6 +1,6 @@
 import type { FastifyError } from 'fastify';
 import fp from 'fastify-plugin';
-import { AppError, type ErrorDetail } from '#/shared/errors/app.error';
+import { AppError, type ErrorDetail } from '#/common/errors/app.error';
 import {
   errorCodeFor,
   HttpError,
@@ -9,8 +9,8 @@ import {
   isServerErrorStatus,
   NotFoundError,
   reasonPhrase,
-} from '#/shared/errors/http.error';
-import type { ErrorResponse } from '#/shared/schemas/http.schema';
+} from '#/common/errors/handler.error';
+import type { ErrorResponse } from '#/common/schemas/http.schema';
 
 type ErrorBody = Omit<ErrorResponse, 'requestId'>;
 type ValidationIssue = NonNullable<FastifyError['validation']>[number];

@@ -1,12 +1,12 @@
-import { randomUUID } from 'node:crypto';
+import { randomUUIDv7 } from 'node:crypto';
 import { UserEmailAlreadyExistsError } from '../user.error.js';
+import type { UserRepository } from '../user.repository.js';
 import type {
   CreateUserInput,
   ListUsersQuery,
   UpdateUserInput,
   User,
 } from '../user.schema.js';
-import type { UserRepository } from './user.repository.js';
 
 export class InMemoryUserRepository implements UserRepository {
   private readonly users = new Map<string, User>();
@@ -24,7 +24,7 @@ export class InMemoryUserRepository implements UserRepository {
 
   async create(input: CreateUserInput): Promise<User> {
     this.assertUniqueEmail(input.email);
-    const user: User = { ...input, id: randomUUID() };
+    const user: User = { ...input, id: randomUUIDv7() };
     this.users.set(user.id, user);
     return { ...user };
   }

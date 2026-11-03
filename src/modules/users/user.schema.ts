@@ -1,64 +1,48 @@
-import { type Static, Type } from 'typebox';
+import { z } from 'zod';
 
-const Name = Type.String({
-  minLength: 1,
-  maxLength: 120,
-  pattern: '\\S',
-});
+const Name = z.string().min(1).max(120).regex(/\S/);
 
-const Email = Type.String({
-  format: 'email',
-  maxLength: 254,
-});
+const Email = z.email().max(254);
 
-export const userSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-    }),
+const Id = z.uuid();
+
+export const userSchema = z
+  .object({
+    id: Id,
     name: Name,
     email: Email,
-  },
-  { additionalProperties: false },
-);
+  })
+  .strict();
 
-export const createUserSchema = Type.Object(
-  {
+export const createUserSchema = z
+  .object({
     name: Name,
     email: Email,
-  },
-  { additionalProperties: false },
-);
+  })
+  .strict();
 
-export const updateUserSchema = Type.Partial(createUserSchema, {
-  minProperties: 1,
+export const updateUserSchema = createUserSchema
+  .partial()
+  .strict()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one property must be provided',
+  });
+
+export const userParamsSchema = z.object({
+  id: Id,
 });
 
-export const userParamsSchema = Type.Object({
-  id: Type.String({
-    format: 'uuid',
-  }),
-});
+export const listUsersQuerySchema = z
+  .object({
+    limit: z.coerce.number().int().min(1).max(100).default(20),
+    offset: z.coerce.number().int().min(0).default(0),
+  })
+  .strict();
 
-export const listUsersQuerySchema = Type.Object(
-  {
-    limit: Type.Integer({
-      minimum: 1,
-      maximum: 100,
-      default: 20,
-    }),
-    offset: Type.Integer({
-      minimum: 0,
-      default: 0,
-    }),
-  },
-  { additionalProperties: false },
-);
+export const userListSchema = z.array(userSchema);
 
-export const userListSchema = Type.Array(userSchema);
-
-export type User = Static<typeof userSchema>;
-export type CreateUserInput = Static<typeof createUserSchema>;
-export type UpdateUserInput = Static<typeof updateUserSchema>;
-export type UserParams = Static<typeof userParamsSchema>;
-export type ListUsersQuery = Static<typeof listUsersQuerySchema>;
+export type User = z.infer<typeof userSchema>;
+export type CreateUserInput = z.infer<typeof createUserSchema>;
+export type UpdateUserInput = z.infer<typeof updateUserSchema>;
+export type UserParams = z.infer<typeof userParamsSchema>;
+export type ListUsersQuery = z.infer<typeof listUsersQuerySchema>;

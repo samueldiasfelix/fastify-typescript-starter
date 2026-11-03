@@ -1,6 +1,6 @@
 import type { FastifySessionOptions } from '@fastify/session';
 import { env } from '#/config/env';
-import { isProduction } from '#/shared/utils/env';
+import { isProduction } from '../common/utils/env.js';
 
 export const SESSION_TTL = 60 * 60 * 24 * 7; // 7 dias
 

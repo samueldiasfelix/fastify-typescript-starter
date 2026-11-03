@@ -1,4 +1,4 @@
-import { NotFoundError } from '#/shared/errors/http.error';
+import { NotFoundError } from '../../common/errors/handler.error.js';
 
 export class CustomerNotFoundError extends NotFoundError {
   constructor() {

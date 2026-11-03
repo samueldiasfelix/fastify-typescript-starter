@@ -1,4 +1,4 @@
-import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import type { CustomerController } from './customer.controller.js';
 import {
   createCustomerSchema,
@@ -12,7 +12,7 @@ import {
 export class CustomerRoutes {
   constructor(private readonly customerController: CustomerController) {}
 
-  register: FastifyPluginAsyncTypebox = async (app) => {
+  register: FastifyPluginAsyncZod = async (app) => {
     app.get(
       '/',
       {

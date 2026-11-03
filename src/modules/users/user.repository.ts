@@ -3,7 +3,7 @@ import type {
   ListUsersQuery,
   UpdateUserInput,
   User,
-} from '../user.schema.js';
+} from './user.schema.js';
 
 export interface UserRepository {
   findAll(query: ListUsersQuery): Promise<User[]>;

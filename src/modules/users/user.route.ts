@@ -1,4 +1,4 @@
-import type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox';
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import type { UserController } from './user.controller.js';
 import {
   createUserSchema,
@@ -12,7 +12,7 @@ import {
 export class UserRoutes {
   constructor(private readonly userController: UserController) {}
 
-  register: FastifyPluginAsyncTypebox = async (app) => {
+  register: FastifyPluginAsyncZod = async (app) => {
     app.get(
       '/',
       {

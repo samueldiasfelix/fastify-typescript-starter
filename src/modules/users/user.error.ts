@@ -1,4 +1,7 @@
-import { ConflictError, NotFoundError } from '#/shared/errors/http.error';
+import {
+  ConflictError,
+  NotFoundError,
+} from '../../common/errors/handler.error.js';
 
 export class UserNotFoundError extends NotFoundError {
   constructor() {

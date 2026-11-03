@@ -6,6 +6,8 @@ export type Role = 'customer' | 'staff' | 'admin';
 export const users = pgTable('users', {
   id: uuid().primaryKey().defaultRandom(),
 
+  name: text().notNull(),
+
   email: text().notNull().unique(),
 
   emailVerified: boolean('email_verified').notNull().default(false),

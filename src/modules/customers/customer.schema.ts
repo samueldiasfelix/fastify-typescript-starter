@@ -1,35 +1,41 @@
-import { type Static, Type } from 'typebox';
+import { z } from 'zod';
 
-const Id = Type.String({ format: 'uuid' });
+const Id = z.uuid();
 
-export const customerSchema = Type.Object(
-  { id: Id, userId: Id },
-  { additionalProperties: false },
-);
+export const customerSchema = z
+  .object({
+    id: Id,
+    userId: Id,
+  })
+  .strict();
 
-export const createCustomerSchema = Type.Object(
-  { userId: Id },
-  { additionalProperties: false },
-);
+export const createCustomerSchema = z
+  .object({
+    userId: Id,
+  })
+  .strict();
 
-export const updateCustomerSchema = Type.Partial(createCustomerSchema, {
-  minProperties: 1,
+export const updateCustomerSchema = createCustomerSchema
+  .partial()
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one property must be provided',
+  });
+
+export const customerParamsSchema = z.object({
+  id: Id,
 });
 
-export const customerParamsSchema = Type.Object({ id: Id });
+export const listCustomersQuerySchema = z
+  .object({
+    limit: z.coerce.number().int().min(1).max(100).default(20),
+    offset: z.coerce.number().int().min(0).default(0),
+  })
+  .strict();
 
-export const listCustomersQuerySchema = Type.Object(
-  {
-    limit: Type.Integer({ minimum: 1, maximum: 100, default: 20 }),
-    offset: Type.Integer({ minimum: 0, default: 0 }),
-  },
-  { additionalProperties: false },
-);
+export const customerListSchema = z.array(customerSchema);
 
-export const customerListSchema = Type.Array(customerSchema);
-
-export type Customer = Static<typeof customerSchema>;
-export type CreateCustomerInput = Static<typeof createCustomerSchema>;
-export type UpdateCustomerInput = Static<typeof updateCustomerSchema>;
-export type CustomerParams = Static<typeof customerParamsSchema>;
-export type ListCustomersQuery = Static<typeof listCustomersQuerySchema>;
+export type Customer = z.infer<typeof customerSchema>;
+export type CreateCustomerInput = z.infer<typeof createCustomerSchema>;
+export type UpdateCustomerInput = z.infer<typeof updateCustomerSchema>;
+export type CustomerParams = z.infer<typeof customerParamsSchema>;
+export type ListCustomersQuery = z.infer<typeof listCustomersQuerySchema>;

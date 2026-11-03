@@ -1,5 +1,5 @@
 import { STATUS_CODES } from 'node:http';
-import { AppError, type AppErrorOptions } from '#/shared/errors/app.error';
+import { AppError, type AppErrorOptions } from './app.error.js';
 
 interface HttpStatusMap {
   readonly BAD_REQUEST: 400;

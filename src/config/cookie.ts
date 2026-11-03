@@ -1,6 +1,6 @@
 import type { FastifyCookieOptions } from '@fastify/cookie';
 import { env } from '#/config/env';
-import { isProduction } from '#/shared/utils/env';
+import { isProduction } from '../common/utils/env.js';
 
 export const cookieOptions: FastifyCookieOptions = {
   secret: env.COOKIE_SECRET,

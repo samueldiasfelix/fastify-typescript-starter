@@ -1,6 +1,6 @@
 import type { PinoLoggerOptions } from 'fastify/types/logger.js';
 import { env } from '#/config/env';
-import { isDevelopment } from '#/shared/utils/env';
+import { isDevelopment } from '../common/utils/env.js';
 
 export const loggerOptions: PinoLoggerOptions = {
   level: env.LOG_LEVEL,
