@@ -1,0 +1,34 @@
+import { randomUUIDv7 } from 'node:crypto';
+import { join } from 'node:path';
+import autoload from '@fastify/autoload';
+import { fastifyAwilixPlugin } from '@fastify/awilix';
+import type { ZodTypeProvider } from '@fastify/type-provider-zod';
+import fastify from 'fastify';
+
+import { env } from '#/config/env';
+import { loggerOptions } from '#/config/logger';
+import { type ContainerOverrides, createDiContainer } from '#/container';
+
+export async function buildApp(overrides: ContainerOverrides = {}) {
+  const app = fastify({
+    genReqId: () => randomUUIDv7(),
+    logger: loggerOptions,
+    trustProxy: env.TRUST_PROXY,
+  }).withTypeProvider<ZodTypeProvider>();
+
+  await app.register(fastifyAwilixPlugin, {
+    container: createDiContainer(overrides),
+    disposeOnClose: true,
+    disposeOnResponse: true,
+  });
+
+  await app.register(autoload, {
+    dir: join(import.meta.dirname, 'plugins'),
+  });
+
+  await app.register(app.diContainer.resolve('userRoutes').register, {
+    prefix: '/users',
+  });
+
+  return app;
+}
